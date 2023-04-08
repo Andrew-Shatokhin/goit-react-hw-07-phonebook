@@ -8,14 +8,14 @@ import { Title, TitleSection } from './App.styled';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from '../redux/operations';
-import { getIsLoading, getError } from '../redux/selectors';
+import { selectIsLoading, selectError } from '../redux/selectors';
 
 
 export default function App() {
 
   const dispatch = useDispatch();
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -24,14 +24,15 @@ export default function App() {
     return (
       <Layout>
         {isLoading && !error && <b>Request in progress..</b>}
-        {/* {error && <b>{error}</b>} */}
-        {/* <p>{items.length > 0 && JSON.stringify(items, null, 2)}</p> */}
+        {error && <b style={{ fontSize: 24, textAlign:'center' }}>{error}</b>}
+
 
         <Title>Phonebook</Title>
         <Form />
         <TitleSection>Contacts</TitleSection>
         <Filter />
         <ContactsList />
+
 
         <GlobalStyle />
       </Layout>
