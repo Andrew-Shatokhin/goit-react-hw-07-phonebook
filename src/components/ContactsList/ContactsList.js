@@ -1,3 +1,44 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from '../../redux/operations';
+import { List, Item, Button, Text } from './ContactsList.styled';
+import { getContacts, getFilter } from '../../redux/selectors';
+
+
+const getVisibleContacts = (contacts, filter) =>
+  contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+
+const ContactsList = () => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const visibleContacts = getVisibleContacts(contacts, filter);
+
+  const dispatch = useDispatch();
+  const contactDelete = (id) => dispatch(deleteContact(id));
+
+  return (
+    <div>
+      <List>
+        {visibleContacts.map(({ id, name, phone }) => (
+          <Item key={id}>
+            <Text>
+              {name}: {phone}
+            </Text>
+            <Button type="submit" onClick={() => contactDelete(id)}>
+              Delete
+            </Button>
+          </Item>
+        ))}
+      </List>
+    </div>
+  );
+};
+export default ContactsList;
+
+
+
 // import { useDispatch, useSelector } from 'react-redux';
 // import { deleteContact} from '../../redux/contactSlice';
 // import { List, Item, Button, Text } from './ContactsList.styled';
@@ -15,7 +56,7 @@
 //   const contacts = getVisibleContacts(items, filter);
 
 //   const dispatch = useDispatch();
-//   const contactsDelete = id => dispatch(deleteContact(id));
+//   // const contactsDelete = id => dispatch(deleteContact(id));
 
 //   return (
 //     <div>
@@ -35,4 +76,3 @@
 //   );
 // };
 // export default ContactsList;
-
